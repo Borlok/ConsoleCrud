@@ -40,7 +40,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                         writer.print(",");
                     writer.print(specialties.get(j));
                 }
-                writer.println("] " + customer.getAccount().getStatus()); //14.10 12
+                writer.println("] " + customers.get(i).getAccount().getStatus()); //14.10 12
             }
         } catch (IOException e) {
             e.printStackTrace();

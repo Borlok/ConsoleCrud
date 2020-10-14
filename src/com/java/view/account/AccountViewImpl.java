@@ -84,7 +84,8 @@ public class AccountViewImpl implements AccountView{
     public void getAll() {
         System.out.println("--Список аккаунтов--");
         for (int i = 0; i < accountController.getAll().size(); i++) {
-            System.out.println("id: " + (i+1) + " | " + accountController.getAll().get(i) + " |");
+            System.out.println("id: " + (i+1) + " | " + accountController.getAll().get(i) + " | "
+            + accountController.getAll().get(i).getStatus() + " |");
         }
     }
 

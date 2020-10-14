@@ -1,2 +1,4 @@
-1|Yura
-2|Vasya
+1 | null | DELETED |
+2 | Vasya | ACTIVE |
+3 | Petr | ACTIVE |
+4 | Valera | ACTIVE |

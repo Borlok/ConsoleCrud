@@ -6,6 +6,7 @@ import com.java.repository.customer.CustomerRepositoryImpl;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class AccountRepositoryImpl implements AccountRepository{
             accounts.add(account);
 //            System.out.println(Arrays.toString(accounts.toArray()));//
             for (int i = 0; i < accounts.size(); i++) {
-                writer.println((i + 1) + "|" + accounts.get(i));
+                writer.println((i + 1) + " | " + accounts.get(i) + " | " + accounts.get(i).getStatus() + " |");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,7 +33,7 @@ public class AccountRepositoryImpl implements AccountRepository{
     public void create() {
         try (PrintWriter writer = new PrintWriter("accounts.txt")) {
             for (int i = 0; i < accounts.size(); i++) {
-                writer.println((i + 1) + "|" + accounts.get(i));
+                writer.println((i + 1) + "| " + accounts.get(i) + " | " + accounts.get(i).getStatus() + " |");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,6 +48,7 @@ public class AccountRepositoryImpl implements AccountRepository{
     @Override
     public void update(Account account, Long id) {
         accounts = getAll();
+        account.setStatus(AccountStatus.ACTIVE);
         accounts.set((int) (id - 1),account);
         create();
     }
@@ -54,7 +56,7 @@ public class AccountRepositoryImpl implements AccountRepository{
     @Override
     public void delete(Long id) {
         accounts = getAll();
-        accounts.set((int) (id - 1),null);
+        accounts.set((int) (id - 1),new Account(null,AccountStatus.DELETED));
         create();
     }
 
@@ -63,7 +65,13 @@ public class AccountRepositoryImpl implements AccountRepository{
         accounts = new ArrayList<>();
         try (Scanner sc = new Scanner(new FileInputStream(file))) {
             while (sc.hasNext()) {
-                accounts.add(new Account(sc.skip("\\d\\|").nextLine(), AccountStatus.ACTIVE));
+                String customer = sc.nextLine();
+                String [] split = Arrays.stream(customer.split("[^a-zA-ZА-Яа-я]"))
+                        .filter(zx->!(zx.equals("")))
+                        .toArray(String[]::new);
+                String name = split[0];
+                AccountStatus status = AccountStatus.valueOf(split[1]);
+                accounts.add(new Account(name, status));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
