@@ -17,7 +17,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     private List<Customer> customers;
     private List<Integer> specialties;
     private File file = new File("customers.txt");
-    private String name;
+//    private String name;
 
 
     @Override
@@ -40,7 +40,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                         writer.print(",");
                     writer.print(specialties.get(j));
                 }
-                writer.println("]");
+                writer.println("] " + customer.getAccount().getStatus()); //14.10 12
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         return specialties;
     }
 
-    public void create() {
+    public void createWithoutNewCustomer() {
         try (PrintWriter writer = new PrintWriter("customers.txt")) {
             for (int i = 0; i < customers.size(); i++) {
                 writer.print((i + 1) + "|" + customers.get(i) + " [");
@@ -74,7 +74,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                         writer.print(",");
                     writer.print(specialties.get(j));
                 }
-                writer.println("]");
+                writer.println("] " + customers.get(i).getAccount().getStatus()); //14.10 12
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,15 +89,16 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     @Override
     public void update(Customer customer, Long id) {
         customers = getAll();
+        customer.getAccount().setStatus(AccountStatus.ACTIVE);
         customers.set((int) (id - 1),customer);
-        create();
+        createWithoutNewCustomer();
     }
 
     @Override
     public void delete(Long id) {
         customers = getAll();
         customers.set((int) (id - 1),new Customer(new HashSet<>(),new Account(null,AccountStatus.DELETED)));
-        create();
+        createWithoutNewCustomer();
     }
 
     @Override
@@ -106,9 +107,15 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 //        System.out.println("Здесь");//
         try (Scanner sc = new Scanner(new FileInputStream(file))) {
             while (sc.hasNext()) {
-                Set<Specialty> spec = getSpecialties(sc);
+                String customer = sc.nextLine();
+                String [] split = Arrays.stream(customer.split("[^a-zA-ZА-Яа-я]"))
+                        .filter(zx->!(zx.equals("")))
+                        .toArray(String[]::new);
+                String name = split[0];
+                AccountStatus status = AccountStatus.valueOf(split[1]);
+                Set<Specialty> spec = getSpecialties(customer);
 //                System.out.println("Здесь " + spec);//
-                customers.add(new Customer(spec, new Account(name, AccountStatus.ACTIVE)));
+                customers.add(new Customer(spec, new Account(name,status)));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -117,17 +124,14 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         return customers;
     }
 
-    private Set<Specialty> getSpecialties(Scanner sc) {
+    private Set<Specialty> getSpecialties(String customer) {
         Set<Specialty> special = new HashSet<>();
-        if (sc.hasNext()) {
-            String customer = sc.nextLine();
-            name = Arrays.stream(customer.split("[^a-zA-ZА-Яа-я]")).reduce("",String::concat);
 //            System.out.println(name);//
             String[] spec = Arrays.stream(customer.split("\\D")).skip(1).filter(x -> !(x.equals(""))).toArray(String[]::new);
             for (String x : spec) {
                 special.add(specialtyRepository.getById(Long.parseLong(x)));
             }
-        }
+
         return special;
     }
 

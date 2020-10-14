@@ -27,7 +27,7 @@ public class AccountViewImpl implements AccountView{
     public void main() {
         sc = new Scanner(System.in);
         int choice = 0;
-        System.out.println("\n--Специальности--");
+        System.out.println("\n--Аккаунты--");
         System.out.println("Выберите действие:");
         System.out.println("1: Добавить аккаунт");
         System.out.println("2: Посмотреть аккаунты");

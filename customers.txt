@@ -1,2 +1,2 @@
-1|Yura []
-2|Vasia [2]
+1|Yura [] ACTIVE
+2|Vasya [3,2] ACTIVE

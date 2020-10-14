@@ -115,7 +115,8 @@ public class CustomerViewImpl implements CustomerView {
     private void getAll() {
         System.out.println("--Список покупателей--");
         for (int i = 0; i < customerController.getAll().size(); i++) {
-            System.out.println("id: " + (i + 1) + " | " + customerController.getAll().get(i) + " |");
+            System.out.println("id: " + (i + 1) + " | " + customerController.getAll().get(i) + " | "
+            + customerController.getAll().get(i).getAccount().getStatus() + " |");
         }
     }
 
