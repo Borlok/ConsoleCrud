@@ -96,7 +96,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     @Override
     public void delete(Long id) {
         customers = getAll();
-        customers.set((int) (id - 1),null);
+        customers.set((int) (id - 1),new Customer(new HashSet<>(),new Account(null,AccountStatus.DELETED)));
         create();
     }
 

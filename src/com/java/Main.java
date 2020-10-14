@@ -1,19 +1,7 @@
 package com.java;
 
-import com.java.controllers.customer.CustomerControllerImpl;
-import com.java.controllers.specialty.SpecialityController;
-import com.java.controllers.specialty.SpecialityControllerImpl;
-import com.java.model.Specialty;
-import com.java.repository.customer.CustomerRepositoryImpl;
-import com.java.view.customer.CustomerView;
-import com.java.view.customer.CustomerViewImpl;
 import com.java.view.View;
 import com.java.view.ViewImpl;
-import com.java.view.specialty.SpecialtyView;
-import com.java.view.specialty.SpecialtyViewImpl;
-
-import java.io.*;
-import java.util.*;
 
 public class Main {
 
